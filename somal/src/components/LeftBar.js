@@ -19,7 +19,7 @@ import {
   Switch,
 } from "@mui/material";
 import React from "react";
-import Ad from "./Ad";
+import Ad from "./post/AddPost";
 
 const SideBar = ({ mode, setMode }) => {
   return (

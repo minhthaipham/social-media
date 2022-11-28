@@ -11,7 +11,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
-import { editUserById } from "../redux/reducer/user";
+import { editUserById } from "../../redux/reducer/user";
 import { ArrowBack } from "@mui/icons-material";
 const Edit = () => {
   const [data, setData] = React.useState({

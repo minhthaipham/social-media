@@ -3,7 +3,7 @@ import React from "react";
 import { Google, RemoveRedEye } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, google } from "../redux/reducer/auth";
+import { login, google } from "../../redux/reducer/auth";
 import { toast } from "react-toastify";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";

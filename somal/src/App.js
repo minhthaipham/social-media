@@ -1,17 +1,15 @@
 import React from "react";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Profile from "./components/Profile";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Profile from "./components/user/Profile";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
-import Edit from "./components/Edit";
+import Edit from "./components/user/Edit";
 import { useDispatch } from "react-redux";
 import { getPost } from "./redux/reducer/post";
-import decode from "jwt-decode";
-import { logout } from "./redux/reducer/auth";
 
 function App() {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];

@@ -1,9 +1,9 @@
 import { Box, Button, createTheme, Stack, ThemeProvider } from "@mui/material";
-import SideBar from "./SideBar";
-import Feed from "./Feed";
+import SideBar from "./LeftBar";
+import Feed from "./Center";
 import RightBar from "./RightBar";
 import NavBar from "./NavBar";
-import Ad from "./Ad";
+import Ad from "./post/AddPost";
 import React from "react";
 import decode from "jwt-decode";
 import { useDispatch } from "react-redux";
@@ -22,10 +22,8 @@ const Home = () => {
   const [user, setUser] = React.useState(
     JSON.parse(localStorage.getItem("profile"))
   );
-  console.log(user);
   React.useEffect(() => {
     const token = user?.token;
-    console.log(token);
     if (token) {
       const decodedToken = decode(token);
       if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();

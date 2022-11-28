@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/reducer/auth";
 import { json, Link, useNavigate } from "react-router-dom";
 import { searchUser } from "../redux/reducer/user";
+import SearchUser from "./form/SearchUser";
 const ThemeToolBar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
@@ -70,14 +71,8 @@ const NavBar = () => {
     handleClose();
     history("/login");
   };
-  const users = useSelector((state) => state.user.user);
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (search.trim()) {
-      dispatch(searchUser(search));
-    }
-  };
+
   return (
     <AppBar position="sticky">
       <ThemeToolBar>
@@ -103,74 +98,7 @@ const NavBar = () => {
           }}
         />
         {/* <Search> */}
-        <Autocomplete
-          id="country-select-demo"
-          sx={{
-            width: "40%",
-            overflow: "hidden",
-            outline: "none",
-            height: "45px",
-            borderRadius: "10px",
-            border: "none",
-            // hover: {
-            backgroundColor: "white",
-            // },
-            "&:hover": {
-              border: "none",
-            },
-          }}
-          options={users}
-          autoHighlight
-          getOptionLabel={(option) => option.fullName}
-          renderOption={(props, option) => (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-              {...props}
-            >
-              <Link to={`/profile/${option._id}`}>
-                <div className="flex items-center">
-                  <Avatar
-                    src={option.avatar}
-                    sx={{
-                      width: 50,
-                      height: 50,
-                      objectFit: "cover",
-                      marginRight: "10px",
-                      padding: "5px 10px",
-                    }}
-                  />
-                  <Typography variant="body2" className="ml-2">
-                    {option.fullName}
-                  </Typography>
-                </div>
-              </Link>
-            </Box>
-          )}
-          renderInput={(params) => (
-            <form onSubmit={handleSubmit}>
-              <TextField
-                {...params}
-                label="Search"
-                sx={{}}
-                InputProps={{ ...params.InputProps, type: "search" }}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </form>
-          )}
-        />
-        {/* <form onSubmit={handleSubmit}>
-            <InputBase
-              placeholder="Search"
-              onChange={(e) => setSearch(e.target.value)}
-              value={search}
-              fullWidth
-            />
-          </form> */}
-        {/* </Search> */}
+        <SearchUser />
         {user?._id ? (
           <Icons>
             <Badge badgeContent={4} color="error">
@@ -188,7 +116,13 @@ const NavBar = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar
+                  src={user?.avatar}
+                  sx={{
+                    width: 32,
+                    height: 32,
+                  }}
+                />
               </IconButton>
             </Tooltip>
           </Icons>
@@ -210,7 +144,11 @@ const NavBar = () => {
               <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
             </IconButton>
           </Tooltip>
-          <Typography variant="h6">John Doe</Typography>
+          <Typography variant="h6">
+            {user?.fullName.length > 10
+              ? user?.fullName.slice(0, 10)
+              : user?.fullName}
+          </Typography>
         </UserBox>
       </ThemeToolBar>
       <div>

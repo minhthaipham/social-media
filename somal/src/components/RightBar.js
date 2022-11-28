@@ -41,25 +41,25 @@ const RightBar = () => {
           <ImageListItem>
             <img
               src="https://i.pinimg.com/564x/6c/52/ad/6c52ad8998c502c4816a3d95308c7b84.jpg"
-              alt="image"
+              alt="image4"
             />
           </ImageListItem>
           <ImageListItem>
             <img
               src="https://i.pinimg.com/564x/6c/52/ad/6c52ad8998c502c4816a3d95308c7b84.jpg"
-              alt="image"
+              alt="image1"
             />
           </ImageListItem>
           <ImageListItem>
             <img
               src="https://i.pinimg.com/564x/6c/52/ad/6c52ad8998c502c4816a3d95308c7b84.jpg"
-              alt="image"
+              alt="image2"
             />
           </ImageListItem>
           <ImageListItem>
             <img
               src="https://i.pinimg.com/564x/6c/52/ad/6c52ad8998c502c4816a3d95308c7b84.jpg"
-              alt="image"
+              alt="image3"
             />
           </ImageListItem>
         </ImageList>

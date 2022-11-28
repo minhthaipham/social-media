@@ -11,7 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../redux/reducer/auth";
+import { register } from "../../redux/reducer/auth";
 const Register = () => {
   const [hide, setHide] = React.useState(true);
   const [hide1, setHide1] = React.useState(true);

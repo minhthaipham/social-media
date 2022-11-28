@@ -2,7 +2,11 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Divider, Modal, styled, Tab, Tabs } from "@mui/material";
-import { followUser, getUserById, unFollowUser } from "../redux/reducer/user";
+import {
+  followUser,
+  getUserById,
+  unFollowUser,
+} from "../../redux/reducer/user";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 const UserBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -34,7 +38,6 @@ const Profile = () => {
   const { users } = useSelector((state) => state.user);
   const { user } = JSON.parse(localStorage.getItem("profile"));
   const handleBtn = () => {
-    //if edit profile to page edit else dispatch follow
     if (user._id === id) {
       navigate(`/edit/${id}`);
     }

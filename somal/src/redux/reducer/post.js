@@ -28,7 +28,6 @@ export const getPost = createAsyncThunk(
 export const likePost = createAsyncThunk(
   "post/likePost",
   async ({ id }, { rejectWithValue }) => {
-    console.log(id);
     try {
       const result = await api.likePost(id);
       return result.data;

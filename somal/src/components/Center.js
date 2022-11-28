@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
-import Card from "./Card";
+import Card from "./post/Card";
 import { useSelector, useDispatch } from "react-redux";
 const Feed = () => {
   const { posts } = useSelector((state) => state.post) || [];

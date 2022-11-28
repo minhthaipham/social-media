@@ -35,17 +35,20 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserById } from "../redux/reducer/user";
+import { getUserById } from "../../redux/reducer/user";
 import {
   likePost,
   getUserLikePost,
   deletePost,
   getPost,
-} from "../redux/reducer/post";
+} from "../../redux/reducer/post";
+import { LikePost } from "./LikePost";
+import { useNavigate } from "react-router-dom";
 const Card = ({ posts }) => {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
   const { userLikePost } = useSelector((state) => state.post);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,36 +57,10 @@ const Card = ({ posts }) => {
     setAnchorEl(null);
   };
   const dispatch = useDispatch();
-  console.log(posts);
   const handleLike = () => {
     dispatch(likePost({ ...posts, id: posts._id }));
   };
 
-  const Likes = () => {
-    if (posts?.likes.length === 0) {
-      return (
-        <Typography variant="body2" color="textSecondary" component="p">
-          Be the first to like this
-        </Typography>
-      );
-    } else {
-      return posts?.likes.find((like) => like === user?._id) ? (
-        <div>
-          &nbsp;
-          {posts?.likes.length > 2
-            ? `You and ${posts?.likes.length - 1} others`
-            : `${posts?.likes.length} like${
-                posts?.likes.length > 1 ? "s" : ""
-              }`}
-        </div>
-      ) : (
-        <div>
-          &nbsp;{posts?.likes.length}{" "}
-          {posts?.likes.length === 1 ? "Like" : "Likes"}
-        </div>
-      );
-    }
-  };
   const [isShown, setIsShown] = React.useState(false);
   // React.useEffect(() => {
   //   if (!isShown) {
@@ -99,7 +76,15 @@ const Card = ({ posts }) => {
   //   setIsShown(!isShown);
   //   dispatch(getUserLikePost({ id: posts?._id }));
   // }, [isShown]);
-
+  const handleGetUser = () => {
+    // console.log(posts?.creator._id);
+    dispatch(getUserById(posts?.creator._id));
+    if (posts?.creator._id !== user._id) {
+      navigate(`/profile/${posts?.creator._id}`);
+    } else {
+      navigate("/profile");
+    }
+  };
   const handleDeletePost = () => {
     if (posts?.creator?._id === user?._id) {
       dispatch(deletePost({ id: posts?._id }));
@@ -111,7 +96,13 @@ const Card = ({ posts }) => {
     <CardMui sx={{ margin: "15px 0px" }}>
       <CardHeader
         className="bg-gray-100"
-        avatar={<Avatar src={posts?.creator?.avatar} />}
+        avatar={
+          <Avatar
+            src={posts?.creator?.avatar}
+            className="cursor-pointer"
+            onClick={handleGetUser}
+          />
+        }
         action={
           <IconButton
             aria-label="settings"
@@ -202,7 +193,7 @@ const Card = ({ posts }) => {
           // onClick={handleShowUserLikePost}
           className=" hover:cursor-pointer w-fit overflow-hidden relative"
         >
-          {isShown &&
+          {/* {isShown &&
             userLikePost?.map((user) => {
               return (
                 <Box
@@ -231,8 +222,9 @@ const Card = ({ posts }) => {
                   </div>
                 </Box>
               );
-            })}
-          <Likes />
+            })} */}
+          {/* <Likes /> */}
+          <LikePost posts={posts} user={user} />
         </div>
         {/* </Typography> */}
         <Typography variant="h6" color="text.secondary">

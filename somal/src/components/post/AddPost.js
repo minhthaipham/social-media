@@ -24,7 +24,7 @@ import { Stack } from "@mui/system";
 import React from "react";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost } from "../redux/reducer/post";
+import { createPost } from "../../redux/reducer/post";
 const TestModal = styled(Modal)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
