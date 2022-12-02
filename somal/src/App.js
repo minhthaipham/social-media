@@ -10,6 +10,7 @@ import NavBar from "./components/NavBar";
 import Edit from "./components/user/Edit";
 import { useDispatch } from "react-redux";
 import { getPost } from "./redux/reducer/post";
+import { getUserById } from "./redux/reducer/user";
 
 function App() {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
@@ -17,6 +18,12 @@ function App() {
   React.useEffect(() => {
     dispatch(getPost());
   }, [dispatch]);
+
+  // React.useEffect(() => {
+  //   if (user) {
+  //     dispatch(getUserById(user?._id));
+  //   }
+  // }, [dispatch, user]);
 
   return (
     <BrowserRouter>

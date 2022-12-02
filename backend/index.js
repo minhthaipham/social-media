@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import auth from "./router/auth.js";
 import user from "./router/user.js";
 import post from "./router/posts.js";
+import comment from "./router/comment.js";
 const app = express();
 const port = 5000;
 
@@ -18,7 +19,7 @@ app.use(cors());
 app.use("/auth", auth);
 app.use("/auth", user);
 app.use("/post", post);
-
+app.use("/comment", comment);
 mongoose
   .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {

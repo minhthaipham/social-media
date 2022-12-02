@@ -1,14 +1,17 @@
 import React from "react";
 import {
   BookmarkBorder,
+  ChatBubbleOutline,
   Delete,
   Edit,
+  EmojiEmotions,
   Favorite,
   FavoriteBorder,
   MoreVert,
   NotificationsNone,
   Settings,
   Share,
+  SmsFailed,
   ThumbUpAlt,
   ThumbUpAltOutlined,
 } from "@mui/icons-material";
@@ -26,11 +29,13 @@ import {
   IconButton,
   ImageList,
   ImageListItem,
+  Input,
   Link,
   ListItemIcon,
   Menu,
   MenuItem,
   Popover,
+  TextField,
   Typography,
 } from "@mui/material";
 import moment from "moment";
@@ -44,12 +49,15 @@ import {
 } from "../../redux/reducer/post";
 import { LikePost } from "./LikePost";
 import { useNavigate } from "react-router-dom";
+import Comment from "./Comment";
+import CardComment from "./CardComment";
+import { getComment } from "../../redux/reducer/comment";
 const Card = ({ posts }) => {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
   const { userLikePost } = useSelector((state) => state.post);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const navigate = useNavigate();
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -92,6 +100,10 @@ const Card = ({ posts }) => {
       alert("You can not delete this post");
     }
   };
+
+  // React.useEffect(() => {
+  //   dispatch(getComment({ id: posts?._id }));
+  // }, []);
   return (
     <CardMui sx={{ margin: "15px 0px" }}>
       <CardHeader
@@ -177,6 +189,12 @@ const Card = ({ posts }) => {
             <Share />
           </IconButton>
         </div>
+        <div className="  ">
+          {/* <IconButton aria-label="share"> */}
+          {/* <ChatBubbleOutline /> */}
+          <p className="text-gray-500">{posts?.comments.length} Comment</p>
+          {/* </IconButton> */}
+        </div>
       </CardActions>
       <CardContent
         sx={{
@@ -239,6 +257,12 @@ const Card = ({ posts }) => {
           <Likes />
         </p>
       </div> */}
+      {/* <CardComment posts={posts} /> */}
+      {posts?.comments.map((comment) => (
+        <CardComment key={comment?._id} comment={comment} />
+      ))}
+      <Divider />
+      <Comment posts={posts} />
     </CardMui>
   );
 };

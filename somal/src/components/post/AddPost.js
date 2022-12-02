@@ -129,6 +129,7 @@ const Ad = () => {
                 }}
               />
             </Stack>
+
             <Stack direction="row" gap={2} my={2}>
               <IconButton onClick={handleLike}>
                 <ThumbUpAltOutlined color="primary" />

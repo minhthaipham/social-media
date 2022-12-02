@@ -61,12 +61,38 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+export const createComment = createAsyncThunk(
+  "post/createComment",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const result = await api.createComment(id, data);
+      return result.data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
+    }
+  }
+);
+
+export const likeComment = createAsyncThunk(
+  "post/likeComment",
+  async ({ id, data }, { rejectWithValue }) => {
+    console.log(id, data);
+    try {
+      const result = await api.likeComment(id, data);
+      return result.data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState: {
     posts: [],
     post: {},
     userLikePost: [],
+    status: "idle",
     loading: false,
     errors: null,
   },
@@ -128,6 +154,19 @@ const postSlice = createSlice({
       );
     },
     [deletePost.rejected]: (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    },
+    [createComment.pending]: (state) => {
+      state.loading = true;
+    },
+    [createComment.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
+    },
+    [createComment.rejected]: (state, action) => {
       state.loading = false;
       state.errors = action.payload;
     },

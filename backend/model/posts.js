@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { get } from "mongoose";
 const postSchema = new mongoose.Schema(
   {
     content: {
@@ -7,27 +7,22 @@ const postSchema = new mongoose.Schema(
     images: {
       type: Array,
     },
-    // images: [
-    //   {
-    //     public_id: {
-    //       type: String,
-    //     },
-    //     url: {
-    //       type: String,
-    //     },
-    //   },
-    // ],
-    // video: {
-    //   public_id: {
-    //     type: String,
-    //   },
-    //   url: {
-    //     type: String,
-    //   },
-    // },
     likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
     // comments: [{ type: mongoose.Types.ObjectId, ref: "comment" }],
-    // user: { type: mongoose.Types.ObjectId, ref: "user" },
+    comments: [
+      {
+        content: {
+          type: String,
+        },
+        creator: { type: mongoose.Types.ObjectId, ref: "user" },
+        likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
+        postId: mongoose.Types.ObjectId,
+        createdAt: {
+          type: Date,
+          default: new Date(),
+        },
+      },
+    ],
     creator: {
       type: mongoose.Types.ObjectId,
       ref: "user",
