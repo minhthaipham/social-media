@@ -8,21 +8,21 @@ const postSchema = new mongoose.Schema(
       type: Array,
     },
     likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
-    // comments: [{ type: mongoose.Types.ObjectId, ref: "comment" }],
-    comments: [
-      {
-        content: {
-          type: String,
-        },
-        creator: { type: mongoose.Types.ObjectId, ref: "user" },
-        likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
-        postId: mongoose.Types.ObjectId,
-        createdAt: {
-          type: Date,
-          default: new Date(),
-        },
-      },
-    ],
+    comments: [{ type: mongoose.Types.ObjectId, ref: "comment" }],
+    // comments: [
+    //   {
+    //     content: {
+    //       type: String,
+    //     },
+    //     creator: { type: mongoose.Types.ObjectId, ref: "user" },
+    //     likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
+    //     postId: mongoose.Types.ObjectId,
+    //     createdAt: {
+    //       type: Date,
+    //       default: new Date(),
+    //     },
+    //   },
+    // ],
     creator: {
       type: mongoose.Types.ObjectId,
       ref: "user",

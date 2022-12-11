@@ -25,6 +25,18 @@ export const getPost = createAsyncThunk(
   }
 );
 
+export const getPostByUser = createAsyncThunk(
+  "post/getPostByUser",
+  async (id, { rejectWithValue }) => {
+    try {
+      const result = await api.getPostByUser(id);
+      return result.data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
+    }
+  }
+);
+
 export const likePost = createAsyncThunk(
   "post/likePost",
   async ({ id }, { rejectWithValue }) => {
@@ -75,10 +87,9 @@ export const createComment = createAsyncThunk(
 
 export const likeComment = createAsyncThunk(
   "post/likeComment",
-  async ({ id, data }, { rejectWithValue }) => {
-    console.log(id, data);
+  async ({ id }, { rejectWithValue }) => {
     try {
-      const result = await api.likeComment(id, data);
+      const result = await api.likeComment(id);
       return result.data;
     } catch (e) {
       return rejectWithValue(e.response.data);
@@ -167,6 +178,30 @@ const postSlice = createSlice({
       );
     },
     [createComment.rejected]: (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    },
+    [likeComment.pending]: (state) => {
+      state.loading = true;
+    },
+    [likeComment.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
+    },
+    [likeComment.rejected]: (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    },
+    [getPostByUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [getPostByUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.posts = action.payload;
+    },
+    [getPostByUser.rejected]: (state, action) => {
       state.loading = false;
       state.errors = action.payload;
     },

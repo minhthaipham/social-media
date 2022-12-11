@@ -4,7 +4,7 @@ export const LikePost = ({ posts, user }) => {
   if (posts?.likes.length === 0) {
     return (
       <Typography variant="body2" color="textSecondary" component="p">
-        Be the first to like this
+        {posts && " Be the first to like this"}
       </Typography>
     );
   } else {

@@ -8,6 +8,10 @@ import {
   unFollowUser,
 } from "../../redux/reducer/user";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+import Card from "../post/Card";
+import { getPostByUser } from "../../redux/reducer/post";
+import Post from "../post/Post";
+import PostByUser from "./PostByUser";
 const UserBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -30,6 +34,7 @@ const style = {
 };
 const Profile = () => {
   const [open, setOpen] = React.useState(false);
+  const posts = useSelector((state) => state.post.posts);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { id } = useParams();
@@ -45,11 +50,11 @@ const Profile = () => {
   const handleFollow = () => {
     dispatch(followUser(id));
   };
-
   React.useEffect(() => {
     if (id) {
       dispatch(getUserById(id));
     }
+    // getUserById finish then clear id
   }, [dispatch, id]);
   const [value, setValue] = React.useState("1");
 
@@ -144,8 +149,13 @@ const Profile = () => {
           </div>
           <p>{users?.address}</p>
           <p>{users?.email}</p>
-          <p className="text-base">{users?.story}</p>
-          <a href={users?.website} className="hover:text-sky-500">
+          <p className="text-base">Story :{users?.story}</p>
+          <a
+            href={users?.website}
+            className="hover:text-sky-500"
+            target="_blank"
+            rel="noreferrer"
+          >
             {users?.website}
           </a>
         </div>
@@ -171,7 +181,12 @@ const Profile = () => {
               <Tab label="List friend" value="3" />
             </TabList>
           </Box>
-          <TabPanel value="1">cc</TabPanel>
+          <TabPanel value="1">
+            {/* {posts.map((post) => (
+              <Post key={post._id} post={post} user={user} />
+            ))} */}
+            {/* <PostByUser id={id} /> */}
+          </TabPanel>
           <TabPanel value="2">
             {" "}
             <div className="grid grid-cols-3 gap-5">

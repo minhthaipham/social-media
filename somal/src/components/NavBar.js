@@ -141,7 +141,13 @@ const NavBar = () => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              <Avatar
+                src={user?.avatar}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+              />
             </IconButton>
           </Tooltip>
           <Typography variant="h6">

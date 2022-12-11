@@ -6,7 +6,13 @@ export const getPosts = async (req, res) => {
     const posts = await Posts.find()
       .sort("-createdAt")
       .populate("creator")
-      .populate("comments.creator");
+      // .populate("comments.creator");
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+        },
+      });
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -21,6 +27,12 @@ export const createPost = async (req, res) => {
     creator: user,
     createdAt: new Date().toISOString(),
   });
+  // const userPost = new User({
+  //   ...user,
+  //   posts: [...user.posts, newPost],
+  //   // posts: user.posts.push(newPost),
+  // });
+  // await userPost.save();
   try {
     await newPost.save();
     res.status(201).json(newPost);
@@ -49,7 +61,13 @@ export const likePost = async (req, res) => {
         { new: true }
       )
         .populate("creator")
-        .populate("comments.creator");
+        .populate({
+          path: "comments",
+          populate: {
+            path: "creator",
+          },
+        });
+
       // const newPost = {
       //   ...post,
       //   likes: update.likes,
@@ -68,7 +86,12 @@ export const likePost = async (req, res) => {
         { new: true }
       )
         .populate("creator")
-        .populate("comments.creator");
+        .populate({
+          path: "comments",
+          populate: {
+            path: "creator",
+          },
+        });
       // const newPost = {
       //   ...post,
       //   likes: update.likes,
@@ -102,6 +125,24 @@ export const deletePost = async (req, res) => {
   try {
     const newPost = await Posts.findByIdAndDelete(id);
     res.status(200).json("Post deleted successfully");
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getPostByUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Posts.find({ creator: id })
+      .sort("-createdAt")
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+        },
+      });
+    res.status(200).json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

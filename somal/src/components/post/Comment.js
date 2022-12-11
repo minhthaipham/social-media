@@ -2,7 +2,7 @@ import { EmojiEmotions } from "@mui/icons-material";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createComment } from "../../redux/reducer/post";
-const Comment = ({ posts }) => {
+const Comment = ({ posts, setHide }) => {
   const [content, setContent] = React.useState("");
   const { users } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -16,6 +16,7 @@ const Comment = ({ posts }) => {
       };
       dispatch(createComment({ id: posts?._id, data: newComment }));
       setContent("");
+      setHide(false);
     }
   };
   return (

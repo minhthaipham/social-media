@@ -1,16 +1,22 @@
-import { Avatar, Box, Checkbox, Typography } from "@mui/material";
+import { Avatar, Box, Checkbox, IconButton, Typography } from "@mui/material";
 import React from "react";
 import moment from "moment";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { likeComment } from "../../redux/reducer/post";
+import { LikePost } from "./LikePost";
+import { LikeComponent } from "./LikeComment";
 const CardComment = ({ comment }) => {
-  console.log(comment);
+  const { user } = JSON.parse(localStorage.getItem("profile")) || [];
+  // console.log(user);
   const dispatch = useDispatch();
-  const [like, setLike] = React.useState(false);
   const handleClick = () => {
-    // console.log(comment?._id);
-    dispatch(likeComment({ id: comment._id, data: comment.content }));
+    // if (comment?.likes?.includes(user?._id)) {
+    //   setLike(false);
+    // } else {
+    //   setLike(true);
+    // }
+    dispatch(likeComment({ ...comment, id: comment._id }));
   };
   return (
     <div className="mx-2 mb-2">
@@ -27,18 +33,36 @@ const CardComment = ({ comment }) => {
         <p className="text-xl text-gray-500">{comment?.content}</p>
 
         <div onClick={handleClick}>
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite color="error" />}
-          />
+          {/* <IconButton aria-label="add to favorites">
+            {comment.likes.find((like) => like === user?._id) ? (
+              <Favorite color="error" />
+            ) : (
+              <FavoriteBorder />
+            )}
+          </IconButton> */}
+          <LikeComponent post={comment} user={user} />
+          {/* <Checkbox
+            // icon={<FavoriteBorder />}
+            // checkedIcon={<Favorite color="error" />}
+            icon={like ? <Favorite color="error" /> : <FavoriteBorder />}
+            checkedIcon={like ? <Favorite color="error" /> : <FavoriteBorder />}
+          /> */}
         </div>
       </div>
       <div className="flex ml-2">
         <p className="text-1xs text-gray-500 ">
           {moment(comment?.createdAt).fromNow()}
         </p>
-        <p className="text-1xs text-black mx-2 font-bold">0 likes</p>
-        <p className="text-1xs text-black font-bold">0 replies</p>
+        {/* <p className="text-1xs text-black mx-2 font-bold cursor-pointer">
+          {comment?.likes.length > 2
+            ? `You and ${comment?.likes.length - 1} others`
+            : `${comment?.likes.length} like${
+                comment?.likes.length > 1 ? "s" : ""
+              }`}
+        </p> */}
+        <p className="text-1xs text-black font-bold cursor-pointer ml-2">
+          reply
+        </p>
       </div>
     </div>
     // </Box>

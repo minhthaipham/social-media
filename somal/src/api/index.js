@@ -26,9 +26,9 @@ export const getPost = () => API.get("/post");
 export const likePost = (id) => API.patch(`/post/${id}/likePost`);
 export const getUserLikePost = (id) => API.get(`/post/${id}/user`);
 export const deletePost = (id) => API.delete(`/post/${id}`);
+export const getPostByUser = (id) => API.get(`/post/${id}`);
 
 //comments
 export const createComment = (id, data) =>
   API.post(`/comment/${id}/comment`, data);
-export const likeComment = (id, data) =>
-  API.patch(`/comment/${id}/likeComment`, data);
+export const likeComment = (id) => API.patch(`/comment/${id}/likeComment`);

@@ -11,7 +11,6 @@ const Feed = () => {
       {posts.map((posts) => (
         <Card posts={posts} key={posts?._id} />
       ))}
-      {}
     </Box>
   );
 };
