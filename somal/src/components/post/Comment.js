@@ -20,7 +20,7 @@ const Comment = ({ posts, setHide }) => {
     }
   };
   return (
-    <div className="flex items-center p-2 ">
+    <div className="flex items-center p-2 relative">
       <EmojiEmotions className="text-gray-500 mr-2" />
       {/* <Typography variant="body2" color="textSecondary"> */}
       <form onSubmit={handleSubmit} className="w-full">
@@ -31,7 +31,12 @@ const Comment = ({ posts, setHide }) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <button type="submit" className="hidden"></button>
+        <button
+          type="submit"
+          className="absolute top-[50%] right-0 translate-y-[-50%] mr-2"
+        >
+          Send
+        </button>
       </form>
       {/* </Typography> */}
     </div>

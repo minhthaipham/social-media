@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema(
     avatar: {
       type: String,
       default:
-        "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
+        "https://static2.yan.vn/YanNews/2167221/202102/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg",
     },
     role: { type: String, default: "user" },
     gender: { type: String, default: "male" },

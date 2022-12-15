@@ -8,14 +8,13 @@ import { LikePost } from "./LikePost";
 import { LikeComponent } from "./LikeComment";
 const CardComment = ({ comment }) => {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
+  const userLikeComment = useSelector((state) => state.post.userLikeComment);
+  // console.log(userLikeComment);
+  // console.log(typeof userLikeComment.likes);
+  // console.log(comment);
   // console.log(user);
   const dispatch = useDispatch();
   const handleClick = () => {
-    // if (comment?.likes?.includes(user?._id)) {
-    //   setLike(false);
-    // } else {
-    //   setLike(true);
-    // }
     dispatch(likeComment({ ...comment, id: comment._id }));
   };
   return (
@@ -33,14 +32,14 @@ const CardComment = ({ comment }) => {
         <p className="text-xl text-gray-500">{comment?.content}</p>
 
         <div onClick={handleClick}>
-          {/* <IconButton aria-label="add to favorites">
-            {comment.likes.find((like) => like === user?._id) ? (
+          <IconButton aria-label="add to favorites">
+            {comment?.likes?.find((like) => like === user?._id) ? (
               <Favorite color="error" />
             ) : (
               <FavoriteBorder />
             )}
-          </IconButton> */}
-          <LikeComponent post={comment} user={user} />
+          </IconButton>
+          {/* <LikeComponent post={comment} user={user} /> */}
           {/* <Checkbox
             // icon={<FavoriteBorder />}
             // checkedIcon={<Favorite color="error" />}

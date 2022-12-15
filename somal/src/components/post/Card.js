@@ -54,7 +54,6 @@ import React from "react";
 // import { getComment } from "../../redux/reducer/comment";
 import Post from "./Post";
 const Card = ({ posts }) => {
-  console.log(posts);
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
   // const { userLikePost } = useSelector((state) => state.post);
   // const [anchorEl, setAnchorEl] = React.useState(null);

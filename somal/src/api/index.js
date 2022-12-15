@@ -18,6 +18,7 @@ export const google = (data) => API.post("/auth/google", data);
 export const search = (data) => API.get(`/auth/search?fullName=${data}`);
 export const getUserById = (id) => API.get(`/auth/user/${id}`);
 export const editUser = (id, data) => API.patch(`/auth/user/${id}`, data);
+export const getAllUser = (id) => API.get(`/auth/userNotMe/${id}`);
 
 // post
 export const follow = (id) => API.patch(`/auth/user/${id}/follow`);

@@ -14,16 +14,25 @@ import { getUserById } from "./redux/reducer/user";
 
 function App() {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
+  console.log(user);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getPost());
   }, [dispatch]);
 
-  // React.useEffect(() => {
-  //   if (user) {
-  //     dispatch(getUserById(user?._id));
-  //   }
-  // }, [dispatch, user]);
+  React.useEffect(() => {
+    if (user) {
+      dispatch(getUserById(user?._id));
+    }
+  }, [dispatch, user]);
+
+  const Check = ({ children }) => {
+    if (!user) {
+      toast.error("Please Login First");
+      return <Navigate replace to="/login" />;
+    }
+    return children;
+  };
 
   return (
     <BrowserRouter>

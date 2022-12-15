@@ -68,11 +68,15 @@ export const editUser = async (req, res) => {
 export const follow = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id); // phamminhthai
     if (!user.followers.includes(req.userId)) {
       const newUser = await User.findByIdAndUpdate(
         id,
-        { $push: { followers: req.userId } },
+        {
+          $push: { followers: req.userId },
+          // $push: { following: req.userId }
+        },
+
         { new: true }
       );
       res.status(200).json(newUser);
@@ -89,3 +93,15 @@ export const follow = async (req, res) => {
   }
 };
 // };
+
+export const getAllUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const users = await User.find({ _id: { $ne: id } })
+      .select("-password")
+      .limit(5);
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

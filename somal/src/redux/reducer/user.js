@@ -46,11 +46,32 @@ export const followUser = createAsyncThunk("user/followUser", async (id) => {
   }
 });
 
+export const followingUser = createAsyncThunk(
+  "user/followingUser",
+  async (id) => {
+    try {
+      const result = await api.follow(id);
+      return result.data;
+    } catch (e) {
+      return e.response.data;
+    }
+  }
+);
+export const getAllUser = createAsyncThunk("user/getAllUser", async (id) => {
+  try {
+    const result = await api.getAllUser(id);
+    return result.data;
+  } catch (e) {
+    return e.response.data;
+  }
+});
+
 const userSlide = createSlice({
   name: "user",
   initialState: {
     user: [],
     users: {},
+    searchUser: [],
     loading: false,
     errors: null,
   },
@@ -61,7 +82,7 @@ const userSlide = createSlice({
     },
     [searchUser.fulfilled]: (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.searchUser = action.payload;
     },
     [searchUser.rejected]: (state, action) => {
       state.loading = false;
@@ -96,7 +117,24 @@ const userSlide = createSlice({
       state.loading = false;
       state.users = action.payload;
     },
+    [followingUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = state.user.map((user) =>
+        user._id === action.payload._id ? action.payload : user
+      );
+    },
     [followUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    },
+    [getAllUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getAllUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    },
+    [getAllUser.rejected]: (state, action) => {
       state.loading = false;
       state.errors = action.payload;
     },

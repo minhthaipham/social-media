@@ -9,9 +9,11 @@ import {
 } from "../../redux/reducer/user";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Card from "../post/Card";
-import { getPostByUser } from "../../redux/reducer/post";
+import { clearId, getPostByUser } from "../../redux/reducer/post";
 import Post from "../post/Post";
 import PostByUser from "./PostByUser";
+import Pfy from "./Pfy";
+import Test from "./Test";
 const UserBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -34,14 +36,15 @@ const style = {
 };
 const Profile = () => {
   const [open, setOpen] = React.useState(false);
-  const posts = useSelector((state) => state.post.posts);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { users } = useSelector((state) => state.user);
+  // console.log(users);
   const { user } = JSON.parse(localStorage.getItem("profile"));
+  // console.log(user);
   const handleBtn = () => {
     if (user._id === id) {
       navigate(`/edit/${id}`);
@@ -53,6 +56,7 @@ const Profile = () => {
   React.useEffect(() => {
     if (id) {
       dispatch(getUserById(id));
+      // dispatch(getPostByUser(id));
     }
     // getUserById finish then clear id
   }, [dispatch, id]);
@@ -124,21 +128,25 @@ const Profile = () => {
             </button> */}
             {user?._id === users?._id ? (
               <button
-                className="
-          bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full 
-          "
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
                 onClick={handleBtn}
               >
-                Edit Profile
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Edit Profile
+                </span>
               </button>
             ) : (
               <button
                 className="
-          bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full 
+          relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800
           "
                 onClick={handleFollow}
               >
-                {users?.followers?.includes(user?._id) ? "Unfollow" : "Follow"}
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  {users?.followers?.includes(user?._id)
+                    ? "Unfollow"
+                    : "Follow"}
+                </span>
               </button>
             )}
           </div>
@@ -181,11 +189,15 @@ const Profile = () => {
               <Tab label="List friend" value="3" />
             </TabList>
           </Box>
-          <TabPanel value="1">
+          <TabPanel value="1" className=" flex justify-between">
             {/* {posts.map((post) => (
               <Post key={post._id} post={post} user={user} />
             ))} */}
-            {/* <PostByUser id={id} /> */}
+            {/* <PostByUser /> */}
+            {/* <Pfy /> */}
+            <Test />
+            <Test />
+            <Test />
           </TabPanel>
           <TabPanel value="2">
             {" "}

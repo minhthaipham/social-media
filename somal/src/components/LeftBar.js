@@ -30,7 +30,7 @@ const SideBar = ({ mode, setMode }) => {
     //   //   display: { xs: "none", sm: "block" },
     //   // }}
     // >
-    <div className="flex-1 p-2">
+    <div className="flex-1 p-2 hidden md:block">
       <Box position="fixed">
         <List>
           <ListItemButton>

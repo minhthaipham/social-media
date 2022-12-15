@@ -51,7 +51,7 @@ const Edit = () => {
           />
           <form onSubmit={handleSubmit}>
             <img
-              src={user?.avatar}
+              src={users?.avatar}
               alt="avatar"
               className="w-[150px] h-[150px] rounded-full mx-auto mb-2 object-cover"
             />

@@ -72,9 +72,10 @@ const NavBar = () => {
     history("/login");
   };
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
+  const { users } = useSelector((state) => state.user);
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ backgroundColor: "white", color: "black" }}>
       <ThemeToolBar>
         <Typography
           variant="h6"
@@ -86,8 +87,8 @@ const NavBar = () => {
             to="/"
             style={{
               textDecoration: "none",
-              color: "inherit",
             }}
+            className="text from-cyan-500 to-blue-500"
           >
             SUBEN
           </Link>
@@ -102,10 +103,10 @@ const NavBar = () => {
         {user?._id ? (
           <Icons>
             <Badge badgeContent={4} color="error">
-              <Mail />
+              <Mail className="text-blue-600" />
             </Badge>
             <Badge badgeContent={4} color="error">
-              <Notifications />
+              <Notifications className="text-blue-600" />
             </Badge>
             <Tooltip title="Account settings">
               <IconButton
@@ -172,9 +173,6 @@ const NavBar = () => {
               <Avatar className="mr-2" /> Profile
             </MenuItem>
           </Link>
-          <MenuItem>
-            <Avatar className="mr-2" /> My account
-          </MenuItem>
           <Divider />
 
           <MenuItem>

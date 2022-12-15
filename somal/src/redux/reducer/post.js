@@ -103,11 +103,16 @@ const postSlice = createSlice({
     posts: [],
     post: {},
     userLikePost: [],
+    userLikeComment: [],
     status: "idle",
     loading: false,
     errors: null,
   },
-  reducers: {},
+  reducers: {
+    clearId: (state) => {
+      state.post = {};
+    },
+  },
   extraReducers: {
     [createPost.pending]: (state) => {
       state.loading = true;
@@ -186,9 +191,10 @@ const postSlice = createSlice({
     },
     [likeComment.fulfilled]: (state, action) => {
       state.loading = false;
-      state.posts = state.posts.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      // state.userLikeComment = state.userLikeComment.map((comment) =>
+      //   comment._id === action.payload._id ? action.payload : comment
+      // );
+      state.userLikeComment = action.payload;
     },
     [likeComment.rejected]: (state, action) => {
       state.loading = false;
@@ -208,4 +214,5 @@ const postSlice = createSlice({
   },
 });
 
+export const { clearId } = postSlice.actions;
 export default postSlice.reducer;
