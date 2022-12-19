@@ -3,19 +3,37 @@ import React from "react";
 import moment from "moment";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { likeComment } from "../../redux/reducer/post";
-import { LikePost } from "./LikePost";
-import { LikeComponent } from "./LikeComment";
+import { likeComment, replyComment } from "../../redux/reducer/post";
 const CardComment = ({ comment }) => {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
-  const userLikeComment = useSelector((state) => state.post.userLikeComment);
-  // console.log(userLikeComment);
-  // console.log(typeof userLikeComment.likes);
-  // console.log(comment);
-  // console.log(user);
+  const posts = useSelector((state) => state.post) || [];
+  const [reply, setReply] = React.useState(false);
+  const [textReply, setTextReply] = React.useState("");
+  const [newReply, setNewReply] = React.useState([]);
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(likeComment({ ...comment, id: comment._id }));
+  };
+  // console.log(comment);
+  const handleReply = () => {
+    setReply(!reply);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newReply = {
+      content: textReply,
+      tag: comment?.creator,
+      reply: comment?._id,
+    };
+    dispatch(
+      replyComment({
+        ...comment,
+        id: comment?.postId,
+        data: newReply,
+      })
+    );
+    setTextReply("");
   };
   return (
     <div className="mx-2 mb-2">
@@ -39,29 +57,41 @@ const CardComment = ({ comment }) => {
               <FavoriteBorder />
             )}
           </IconButton>
-          {/* <LikeComponent post={comment} user={user} /> */}
-          {/* <Checkbox
-            // icon={<FavoriteBorder />}
-            // checkedIcon={<Favorite color="error" />}
-            icon={like ? <Favorite color="error" /> : <FavoriteBorder />}
-            checkedIcon={like ? <Favorite color="error" /> : <FavoriteBorder />}
-          /> */}
         </div>
       </div>
       <div className="flex ml-2">
         <p className="text-1xs text-gray-500 ">
           {moment(comment?.createdAt).fromNow()}
         </p>
-        {/* <p className="text-1xs text-black mx-2 font-bold cursor-pointer">
-          {comment?.likes.length > 2
-            ? `You and ${comment?.likes.length - 1} others`
-            : `${comment?.likes.length} like${
-                comment?.likes.length > 1 ? "s" : ""
-              }`}
-        </p> */}
-        <p className="text-1xs text-black font-bold cursor-pointer ml-2">
-          reply
+
+        <p
+          className="text-1xs text-black font-bold cursor-pointer ml-2"
+          onClick={handleReply}
+        >
+          {reply ? "Cancel" : "Reply"}
         </p>
+      </div>
+      <div>
+        {reply && (
+          <div className="ml-10 mr-3 relative">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                className="w-full border-2 border-gray-300 rounded-md p-2 outline-none"
+                placeholder={`@${comment?.creator?.fullName}`}
+                value={textReply}
+                onChange={(e) => setTextReply(e.target.value)}
+              />
+
+              <button
+                type="submit"
+                className="absolute top-[50%] right-0 translate-y-[-50%] mr-2"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
     // </Box>

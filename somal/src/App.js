@@ -11,13 +11,19 @@ import Edit from "./components/user/Edit";
 import { useDispatch } from "react-redux";
 import { getPost } from "./redux/reducer/post";
 import { getUserById } from "./redux/reducer/user";
-
+import { io } from "socket.io-client";
+import SocketClient from "./socketClient";
+import { setSocket } from "./redux/reducer/socket";
 function App() {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
-  console.log(user);
   const dispatch = useDispatch();
+  const [sket, setSket] = React.useState(null);
+  // const socket = useSelector((state) => state.socket);
+  console.log(sket);
   React.useEffect(() => {
     dispatch(getPost());
+    // const socket = io("http://localhost:5000");
+    // setSket(socket);
   }, [dispatch]);
 
   React.useEffect(() => {
@@ -33,10 +39,15 @@ function App() {
     }
     return children;
   };
-
+  // React.useEffect(() => {
+  //   if (sket) {
+  //     sket.emit("join", user?._id);
+  //   }
+  // }, [sket, user]);
   return (
     <BrowserRouter>
       <NavBar />
+      {/* <SocketClient /> */}
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Navigate replace to="/home" />} />

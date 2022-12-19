@@ -6,6 +6,9 @@ import auth from "./router/auth.js";
 import user from "./router/user.js";
 import post from "./router/posts.js";
 import comment from "./router/comment.js";
+import http from "http";
+import { Server } from "socket.io";
+import { socketServer } from "./socketServer.js";
 const app = express();
 const port = 5000;
 
@@ -16,6 +19,20 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
 app.use(express.json());
 app.use(cors());
+
+// Socket
+// const server = http.createServer(app);
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"],
+//   },
+// });
+
+// io.on("connection", (socket) => {
+//   socketServer(socket);
+// });
+
 app.use("/auth", auth);
 app.use("/auth", user);
 app.use("/post", post);

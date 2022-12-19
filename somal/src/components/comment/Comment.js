@@ -22,7 +22,6 @@ const Comment = ({ posts, setHide }) => {
   return (
     <div className="flex items-center p-2 relative">
       <EmojiEmotions className="text-gray-500 mr-2" />
-      {/* <Typography variant="body2" color="textSecondary"> */}
       <form onSubmit={handleSubmit} className="w-full">
         <input
           type="text"
@@ -38,7 +37,6 @@ const Comment = ({ posts, setHide }) => {
           Send
         </button>
       </form>
-      {/* </Typography> */}
     </div>
   );
 };

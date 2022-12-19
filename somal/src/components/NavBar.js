@@ -88,16 +88,26 @@ const NavBar = () => {
             style={{
               textDecoration: "none",
             }}
-            className="text from-cyan-500 to-blue-500"
+            className=" from-cyan-500 to-blue-500"
           >
             SUBEN
           </Link>
         </Typography>
-        <Castle
-          sx={{
-            display: { xs: "block", sm: "none" },
+        <Link
+          to="/"
+          style={{
+            textDecoration: "none",
           }}
-        />
+          className=" from-cyan-500 to-blue-500"
+        >
+          <Castle
+            className="text-blue-600"
+            sx={{
+              display: { xs: "block", sm: "none" },
+            }}
+          />
+        </Link>
+
         {/* <Search> */}
         <SearchUser />
         {user?._id ? (
@@ -108,7 +118,7 @@ const NavBar = () => {
             <Badge badgeContent={4} color="error">
               <Notifications className="text-blue-600" />
             </Badge>
-            <Tooltip title="Account settings">
+            <Tooltip title={user?.fullName}>
               <IconButton
                 onClick={handleClick}
                 size="small"
@@ -133,7 +143,7 @@ const NavBar = () => {
           </Typography>
         )}
         <UserBox>
-          <Tooltip title="Account settings">
+          <Tooltip title={user?.fullName}>
             <IconButton
               onClick={handleClick}
               size="small"
@@ -151,11 +161,11 @@ const NavBar = () => {
               />
             </IconButton>
           </Tooltip>
-          <Typography variant="h6">
+          {/* <Typography variant="h6">
             {user?.fullName.length > 10
               ? user?.fullName.slice(0, 10)
               : user?.fullName}
-          </Typography>
+          </Typography> */}
         </UserBox>
       </ThemeToolBar>
       <div>
@@ -170,7 +180,7 @@ const NavBar = () => {
         >
           <Link to={`/profile/${user?._id}`}>
             <MenuItem>
-              <Avatar className="mr-2" /> Profile
+              <Avatar className="mr-2" src={user?.avatar} /> Profile
             </MenuItem>
           </Link>
           <Divider />

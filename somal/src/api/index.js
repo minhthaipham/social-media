@@ -33,3 +33,5 @@ export const getPostByUser = (id) => API.get(`/post/${id}`);
 export const createComment = (id, data) =>
   API.post(`/comment/${id}/comment`, data);
 export const likeComment = (id) => API.patch(`/comment/${id}/likeComment`);
+export const replyComment = (id, data) =>
+  API.post(`/comment/${id}/replyComment`, data);

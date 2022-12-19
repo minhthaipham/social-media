@@ -1,6 +1,7 @@
 import Comment from "../model/comment.js";
 import Posts from "../model/posts.js";
 import User from "../model/user.js";
+import Reply from "../model/reply.js";
 export const createComment = async (req, res) => {
   const { id } = req.params;
   // const { content, tag, rely } = req.body;
@@ -20,6 +21,7 @@ export const createComment = async (req, res) => {
     const newComment = new Comment({
       ...comment,
       creator: user,
+      postId: id,
     });
     // console.log(newComment);
     await newComment.save();
@@ -37,6 +39,13 @@ export const createComment = async (req, res) => {
           path: "creator",
         },
       });
+    // .populate({
+    //   path: "reply",
+    //   populate: {
+    //     path: "creator",
+    //   },
+    // });
+
     // console.log(result);
     res.status(201).json(result);
     // const update = await Posts.findByIdAndUpdate(
@@ -83,6 +92,38 @@ export const likeComment = async (req, res) => {
       res.status(200).json(update);
     }
     // find by id comment
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const replyComment = async (req, res) => {
+  const { id } = req.params;
+  const reply = req.body;
+  console.log(reply);
+  console.log(id);
+  try {
+    // const post = await Posts.findById(id);
+    // const replyComment = new Comment({
+    //   ...reply,
+    //   creator: req.userId,
+    // });
+    // await replyComment.save();
+    // const newPost = {
+    //   ...post,
+    //   comments: post.comments.push(replyComment),
+    // };
+    // const result = await Posts.findByIdAndUpdate(id, newPost._doc, {
+    //   new: true,
+    // })
+    //   .populate("creator")
+    //   .populate({
+    //     path: "comments",
+    //     populate: {
+    //       path: "creator",
+    //     },
+    //   });
+    // res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

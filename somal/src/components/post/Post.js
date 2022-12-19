@@ -47,17 +47,20 @@ import {
   deletePost,
   getPost,
 } from "../../redux/reducer/post";
-import { LikePost } from "./LikePost";
+// import { LikePost } from "../like/likePost/LikePost";
 import { useNavigate } from "react-router-dom";
-import Comment from "./Comment";
+import Comment from "../comment/Comment";
 import CardComment from "./CardComment";
 import { getComment } from "../../redux/reducer/comment";
+import CardReply from "../reply/CardReply";
+import { LikePost } from "../like/likePost/LikePost";
 const Post = ({ posts, user }) => {
   //   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
   const { userLikePost } = useSelector((state) => state.post);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [hide, setHide] = React.useState(true);
   const open = Boolean(anchorEl);
+  const [reply, setReply] = React.useState([]);
   const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -67,7 +70,11 @@ const Post = ({ posts, user }) => {
   };
   const dispatch = useDispatch();
   const handleLike = () => {
-    dispatch(likePost({ ...posts, id: posts._id }));
+    if (!user) {
+      navigate("/login");
+    } else {
+      dispatch(likePost({ ...posts, id: posts._id }));
+    }
   };
 
   const [isShown, setIsShown] = React.useState(false);
@@ -104,6 +111,9 @@ const Post = ({ posts, user }) => {
       alert("You can not delete this post");
     }
   };
+
+  // React.useEffect(() => {
+
   return (
     <CardMui sx={{ margin: "15px 0px" }}>
       <CardHeader
@@ -175,15 +185,17 @@ const Post = ({ posts, user }) => {
         })}
       </div>
       <CardActions disableSpacing>
-        <div onClick={handleLike}>
-          <IconButton aria-label="add to favorites">
-            {posts?.likes.find((like) => like === user?._id) ? (
-              <Favorite color="error" />
-            ) : (
-              <FavoriteBorder />
-            )}
-          </IconButton>
-        </div>
+        {
+          <div onClick={handleLike}>
+            <IconButton aria-label="add to favorites">
+              {posts?.likes.find((like) => like === user?._id) ? (
+                <Favorite color="error" />
+              ) : (
+                <FavoriteBorder />
+              )}
+            </IconButton>
+          </div>
+        }
         <div className="flex-grow">
           <IconButton aria-label="share">
             <Share />
@@ -238,9 +250,14 @@ const Post = ({ posts, user }) => {
         {posts?.comments.map((comment) => (
           <CardComment key={comment?._id} comment={comment} />
         ))}
+        {/* {posts?.reply.map((reply) => (
+          <CardReply key={reply?._id} reply={reply} />
+        ))} */}
       </div>
+
       <Divider />
       <Comment posts={posts} setHide={setHide} />
+      {/* <CardReply posts={posts} /> */}
     </CardMui>
   );
 };

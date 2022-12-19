@@ -15,6 +15,6 @@ router.post("/", auth, createPost);
 router.get("/", getPosts);
 router.patch("/:id/likePost", auth, likePost);
 router.get("/:id/user", getAllUserLikePost);
-router.delete("/:id", deletePost);
+router.delete("/:id", auth, deletePost);
 router.get("/:id", getPostByUser);
 export default router;

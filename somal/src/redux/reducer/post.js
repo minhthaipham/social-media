@@ -97,6 +97,18 @@ export const likeComment = createAsyncThunk(
   }
 );
 
+export const replyComment = createAsyncThunk(
+  "post/replyComment",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const result = await api.replyComment(id, data);
+      return result.data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState: {
@@ -104,6 +116,7 @@ const postSlice = createSlice({
     post: {},
     userLikePost: [],
     userLikeComment: [],
+    replyComment: [],
     status: "idle",
     loading: false,
     errors: null,
@@ -208,6 +221,19 @@ const postSlice = createSlice({
       state.posts = action.payload;
     },
     [getPostByUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    },
+    [replyComment.pending]: (state) => {
+      state.loading = true;
+    },
+    [replyComment.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
+    },
+    [replyComment.rejected]: (state, action) => {
       state.loading = false;
       state.errors = action.payload;
     },

@@ -9,10 +9,9 @@ import {
 } from "../../redux/reducer/user";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Card from "../post/Card";
-import { clearId, getPostByUser } from "../../redux/reducer/post";
+import { clearId, getPost, getPostByUser } from "../../redux/reducer/post";
 import Post from "../post/Post";
 import PostByUser from "./PostByUser";
-import Pfy from "./Pfy";
 import Test from "./Test";
 const UserBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -38,7 +37,9 @@ const Profile = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [post, setPost] = React.useState([]);
   const { id } = useParams();
+  console.log(id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { users } = useSelector((state) => state.user);
@@ -60,6 +61,18 @@ const Profile = () => {
     }
     // getUserById finish then clear id
   }, [dispatch, id]);
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(clearId());
+    };
+  }, [dispatch]);
+
+  // React.useEffect(() => {
+  //   // setPost(dispatch(getPostByUser(id)));
+  //   setPost((prev) => [...prev, dispatch(getPostByUser(id))]);
+  // }, [dispatch, id]);
+
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
