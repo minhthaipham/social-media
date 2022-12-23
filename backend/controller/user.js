@@ -16,6 +16,13 @@ export const searchUsers = async (req, res) => {
     })
       .select("fullName avatar")
       .limit(5);
+    // const users = await User.find({
+    //   fullName: { $regex: req.query.fullName, $options: "i" },
+    // })
+    //   .find({ _id: { $ne: req.userId } })
+    //   .select("fullName avatar")
+    //   .limit(5);
+
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });

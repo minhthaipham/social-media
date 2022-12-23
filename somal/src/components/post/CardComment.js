@@ -50,13 +50,24 @@ const CardComment = ({ comment }) => {
         <p className="text-xl text-gray-500">{comment?.content}</p>
 
         <div onClick={handleClick}>
-          <IconButton aria-label="add to favorites">
+          {/* <IconButton aria-label="add to favorites">
             {comment?.likes?.find((like) => like === user?._id) ? (
               <Favorite color="error" />
             ) : (
               <FavoriteBorder />
             )}
-          </IconButton>
+          </IconButton> */}
+          {comment?.likes?.find((like) => like === user?._id) ? (
+            <Checkbox
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite color="error" />}
+            />
+          ) : (
+            <Checkbox
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite color="error" />}
+            />
+          )}
         </div>
       </div>
       <div className="flex ml-2">

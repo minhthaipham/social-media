@@ -14,6 +14,7 @@ import { getUserById } from "./redux/reducer/user";
 import { io } from "socket.io-client";
 import SocketClient from "./socketClient";
 import { setSocket } from "./redux/reducer/socket";
+import TestData from "./TestData";
 function App() {
   const { user } = JSON.parse(localStorage.getItem("profile")) || [];
   const dispatch = useDispatch();
@@ -60,6 +61,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/edit/:id" element={<Edit />} />
+        <Route path="/test" element={<TestData />} />
+        <Route path="*" element={<Navigate replace to="/home" />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>
