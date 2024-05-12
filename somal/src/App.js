@@ -32,7 +32,6 @@ function App() {
       dispatch(getUserById(user?._id));
     }
   }, [dispatch, user]);
-
   const Check = ({ children }) => {
     if (!user) {
       toast.error("Please Login First");
@@ -50,13 +49,13 @@ function App() {
       <NavBar />
       {/* <SocketClient /> */}
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Navigate replace to="/home" />} />
         <Route
           path="/login"
-          // element={user ? <Navigate replace to="/home" /> : <Login />}
-          element={<Login />}
+          element={user ? <Navigate replace to="/" /> : <Login />}
+          // element={<Login />}
         />
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Navigate replace to="/home" />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/:id" element={<Profile />} />

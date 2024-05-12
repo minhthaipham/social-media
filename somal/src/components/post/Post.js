@@ -35,6 +35,7 @@ import {
   Menu,
   MenuItem,
   Popover,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -76,7 +77,6 @@ const Post = ({ posts, user }) => {
       dispatch(likePost({ ...posts, id: posts._id }));
     }
   };
-
   const [isShown, setIsShown] = React.useState(false);
   // React.useEffect(() => {
   //   if (!isShown) {

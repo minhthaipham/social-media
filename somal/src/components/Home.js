@@ -39,14 +39,11 @@ const Home = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor={"background.default"} color="text.primary">
-        {/* <NavBar /> */}
-        {/* <Stack direction="row" spacing={2} justifyContent="space-between"> */}
         <div className="flex justify-between ">
           <SideBar mode={mode} setMode={setMode} />
           <Feed />
           <RightBar />
         </div>
-        {/* </Stack> */}
         <Ad />
       </Box>
     </ThemeProvider>

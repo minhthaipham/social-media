@@ -5,16 +5,21 @@ import {
   likePost,
   getAllUserLikePost,
   deletePost,
-  getPostByUser,
+  editPost,
+  getPostByIdUser,
 } from "../controller/posts.js";
 import { auth } from "../middleware/authentication.js";
-
+import multer from "multer";
 const router = express.Router();
-
+const upload = multer({ dest: "uploads/" });
+// router.post("/", auth, createPost);
 router.post("/", auth, createPost);
 router.get("/", getPosts);
-router.patch("/:id/likePost", auth, likePost);
+
+router.post("/editPost", auth, editPost);
+router.post("/deletePost", auth, deletePost);
+router.get("/getPostByIdUser/:id", auth, getPostByIdUser);
+router.post("/likePost", auth, likePost);
 router.get("/:id/user", getAllUserLikePost);
-router.delete("/:id", auth, deletePost);
-router.get("/:id", getPostByUser);
+
 export default router;

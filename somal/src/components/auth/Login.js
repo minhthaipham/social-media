@@ -147,7 +147,7 @@ const Login = () => {
         <div className="w-1/2 hidden md:block ">
           <img
             className="rounded-3xl "
-            src="https://i.pinimg.com/564x/33/7a/67/337a673f095b5e083ebd66388cee7045.jpg"
+            src="https://i.pinimg.com/564x/94/20/ed/9420ed3cfd63b4434cba9659a252abb3.jpg"
             alt="loli"
           />
         </div>

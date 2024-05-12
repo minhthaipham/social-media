@@ -23,13 +23,6 @@ import Ad from "./post/AddPost";
 
 const SideBar = ({ mode, setMode }) => {
   return (
-    // <Box
-    //   flex={1}
-    //   p={2}
-    //   // sx={{
-    //   //   display: { xs: "none", sm: "block" },
-    //   // }}
-    // >
     <div className="flex-1 p-2 hidden md:block">
       <Box position="fixed">
         <List>
@@ -81,12 +74,6 @@ const SideBar = ({ mode, setMode }) => {
             <ListItemIcon>
               <Nightlight />
             </ListItemIcon>
-            {/* <Switch
-                defaultChecked
-                // sx={{
-                //   display: { xs: "none", sm: "block" },
-                // }}
-              /> */}
             <div className="hidden md:block">
               <Switch defaultChecked />
             </div>
@@ -94,7 +81,6 @@ const SideBar = ({ mode, setMode }) => {
         </List>
       </Box>
     </div>
-    // </Box>
   );
 };
 

@@ -100,7 +100,6 @@ const Profile = () => {
             </Box>
           </Modal>
           <img
-            // src="https://i.pinimg.com/564x/69/ee/25/69ee25c1f22fd4f337abf76c54a372cb.jpg"
             src={users?.avatar}
             alt="profile"
             onClick={handleOpen}
@@ -115,30 +114,6 @@ const Profile = () => {
             >
               {users.fullName}
             </h1>
-            {/* <Button
-            variant="outlined"
-            color="primary"
-            sx={{ height: "35px" }}
-            onClick={handleBtn}
-          >
-            {user?._id === users?._id
-              ? "Edit Profile"
-              : users?.followers?.includes(user?._id)
-              ? "Unfollow"
-              : "Follow"}
-          </Button> */}
-            {/* <button
-              className="
-          bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full 
-          "
-              onClick={handleBtn}
-            >
-              {user?._id === users?._id
-                ? "Edit Profile"
-                : users?.followers?.includes(user?._id)
-                ? "Unfollow"
-                : "Follow"}
-            </button> */}
             {user?._id === users?._id ? (
               <button
                 className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
@@ -203,11 +178,6 @@ const Profile = () => {
             </TabList>
           </Box>
           <TabPanel value="1" className=" flex justify-between">
-            {/* {posts.map((post) => (
-              <Post key={post._id} post={post} user={user} />
-            ))} */}
-            {/* <PostByUser /> */}
-            {/* <Pfy /> */}
             <Test />
             <Test />
             <Test />

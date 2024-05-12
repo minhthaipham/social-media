@@ -6,7 +6,7 @@ export const login = createAsyncThunk(
     try {
       const response = await api.login(data);
       toast.success("Login successfully");
-      history("/home");
+      history("/");
       return response.data;
     } catch (e) {
       return rejectWithValue(e.response.data);
@@ -20,7 +20,7 @@ export const register = createAsyncThunk(
     try {
       const response = await api.register(data);
       toast.success("Register successfully");
-      history("/home");
+      history("/");
       return response.data;
     } catch (e) {
       return rejectWithValue(e.response.data);

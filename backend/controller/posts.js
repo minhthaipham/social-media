@@ -1,109 +1,122 @@
 import Posts from "../model/posts.js";
 import User from "../model/user.js";
 import mongoose from "mongoose";
+import Comment from "../model/comment.js";
 export const getPosts = async (req, res) => {
   try {
     const posts = await Posts.find()
       .sort("-createdAt")
       .populate("creator")
-      // .populate("comments.creator");
       .populate({
         path: "comments",
         populate: {
           path: "creator",
         },
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        populate: {
+          path: "replies",
+          populate: {
+            path: "creator",
+            model: User,
+          },
+        },
       });
-
-    res.status(200).json(posts);
+    // .populate("creator");
+    res.status(200).json({
+      status: true,
+      data: posts,
+    });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({
+      status: false,
+      message: error.message,
+    });
   }
 };
 
 export const createPost = async (req, res) => {
-  const post = req.body;
-  const user = await User.findById(post.creator);
-  const newPost = new Posts({
-    ...post,
-    creator: user,
-    createdAt: new Date().toISOString(),
-  });
-  // const userPost = new User({
-  //   ...user,
-  //   posts: [...user.posts, newPost],
-  //   // posts: user.posts.push(newPost),
-  // });
-  // await userPost.save();
+  const { content, image, userId } = req.body;
   try {
+    const newPost = new Posts({
+      content,
+      image,
+      creator: userId,
+      createdAt: new Date().toISOString(),
+    });
     await newPost.save();
-    res.status(201).json(newPost);
-  } catch (err) {
-    // try {
-    //   const newPost = new Posts({
-    //     ...post,
-    //     creator: req.userId,
-    //     createdAt: new Date().toISOString(),
-    //   });
-    //   await newPost.save();
-    //   res.status(201).json(newPost);
-    // }
-    res.status(500).json({ message: err.message });
+    const postUser = await Posts.findOne({ _id: newPost._id }).populate(
+      "creator"
+    );
+    res.status(200).json({
+      status: true,
+      data: postUser,
+    });
+  } catch (error) {
+    res.status(200).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+export const editPost = async (req, res) => {
+  const { content, image, idPost, idUser } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(idPost))
+    return res.status(404).send("No post with that id");
+  try {
+    const post = await Posts.findById(idPost).populate("creator");
+    if (post.creator._id.toString() !== idUser)
+      return res.status(200).json({
+        status: false,
+        message: "You can't edit this post",
+      });
+    const updatePost = await Posts.findByIdAndUpdate(
+      idPost,
+      { content, image },
+      { new: true }
+    );
+    res.status(200).json({
+      status: true,
+      data: updatePost,
+    });
+  } catch (error) {
+    res.status(200).json({
+      status: false,
+      message: error.message,
+    });
   }
 };
 
 export const likePost = async (req, res) => {
-  const { id } = req.params;
-  const post = await Posts.findById(id).populate("creator");
+  const { idPost, idUser } = req.body;
   try {
-    if (!post.likes.includes(req.userId)) {
+    const post = await Posts.findById(idPost).populate("creator");
+    if (!post.likes.includes(idUser)) {
       const update = await Posts.findByIdAndUpdate(
-        id,
-        { $push: { likes: req.userId } },
+        idPost,
+        { $push: { likes: idUser } },
         { new: true }
-      )
-        .populate("creator")
-        .populate({
-          path: "comments",
-          populate: {
-            path: "creator",
-          },
-        });
-
-      // const newPost = {
-      //   ...post,
-      //   likes: update.likes,
-      // };
-      // res.status(200).json(newPost._doc);
-      // res.status(200).json(update);
-      // res.status(200).json({
-      //   ...post._doc,
-      //   likes: update.likes,
-      // });
-      res.status(200).json(update);
+      ).populate("creator");
+      res.status(200).json({
+        status: true,
+        data: update,
+      });
     } else {
       const update = await Posts.findByIdAndUpdate(
-        id,
-        { $pull: { likes: req.userId } },
+        idPost,
+        { $pull: { likes: idUser } },
         { new: true }
-      )
-        .populate("creator")
-        .populate({
-          path: "comments",
-          populate: {
-            path: "creator",
-          },
-        });
-      // const newPost = {
-      //   ...post,
-      //   likes: update.likes,
-      // };
-      // res.status(200).json(newPost._doc);
-      // res.status(200).json(update);
-      // res.status(200).json({
-      //   ...post._doc,
-      //   likes: update.likes,
-      // });
-      res.status(200).json(update);
+      ).populate("creator");
+      res.status(200).json({
+        status: true,
+        data: update,
+      });
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -122,16 +135,35 @@ export const getAllUserLikePost = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-  const { id } = req.params;
+  const { idUser, idPost } = req.body;
   try {
-    const newPost = await Posts.findByIdAndDelete(id);
-    res.status(200).json("Post deleted successfully");
+    const post = await Posts.findById(idPost).populate("creator");
+    if (post.creator._id.toString() !== idUser)
+      return res.status(200).json({
+        status: false,
+        message: "You can't delete this post",
+      });
+    // const deletePost = await Posts.findByIdAndDelete(idPost);
+    // const deleteComment = await Comment.deleteMany({ postId: idPost });
+    // res.status(200).json({
+    //   status: true,
+    //   message: "Delete post success",
+    // });
+    await Posts.findByIdAndDelete(idPost);
+    await Comment.deleteMany({ postId: idPost });
+    res.status(200).json({
+      status: true,
+      message: "Delete post success",
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(200).json({
+      status: false,
+      message: err.message,
+    });
   }
 };
 
-export const getPostByUser = async (req, res) => {
+export const getPostByIdUser = async (req, res) => {
   const { id } = req.params;
   try {
     const post = await Posts.find({ creator: id })
@@ -142,9 +174,29 @@ export const getPostByUser = async (req, res) => {
         populate: {
           path: "creator",
         },
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+          model: User,
+        },
+        populate: {
+          path: "replies",
+          populate: {
+            path: "creator",
+            model: User,
+          },
+        },
       });
-    res.status(200).json(post);
+    res.status(200).json({
+      status: true,
+      data: post,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: false,
+      message: err.message,
+    });
   }
 };

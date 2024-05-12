@@ -2,40 +2,39 @@ import User from "../model/user.js";
 const test = "test";
 
 export const searchUsers = async (req, res) => {
-  const { fullName } = req.query;
+  const { fullName, id } = req.query;
+  console.log(id);
   try {
-    // const fullName = new RegExp(search, "i");
-    // const users = await User.find({ fullName });
-    // search user have fullName contain search
-    // const users = await User.find({
-    //   fullName: { $regex: `${fullName}`, $options: "i" },
-    // });
-    // const users = await User.find({ fullName: { $regex: fullName, $options: "i" } });
     const users = await User.find({
       fullName: { $regex: req.query.fullName, $options: "i" },
     })
-      .select("fullName avatar")
+      .find({ _id: { $ne: id } })
       .limit(5);
-    // const users = await User.find({
-    //   fullName: { $regex: req.query.fullName, $options: "i" },
-    // })
-    //   .find({ _id: { $ne: req.userId } })
-    //   .select("fullName avatar")
-    //   .limit(5);
-
-    res.status(200).json(users);
+    res.status(200).json({
+      status: true,
+      data: users,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: false,
+      message: err.message,
+    });
   }
 };
 
 export const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id).select("-password");
-    res.status(200).json(user);
+    const user = await User.findById(id);
+    res.status(200).json({
+      status: true,
+      data: user,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: false,
+      message: err.message,
+    });
   }
 };
 
@@ -48,9 +47,15 @@ export const editUser = async (req, res) => {
       { avatar, fullName, mobile, address, story, website },
       { new: true }
     );
-    res.status(200).json(newUser);
+    res.status(200).json({
+      status: true,
+      data: newUser,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(200).json({
+      status: false,
+      message: err.message,
+    });
   }
 };
 
@@ -73,33 +78,72 @@ export const editUser = async (req, res) => {
 // };
 
 export const follow = async (req, res) => {
-  const { id } = req.params;
+  const { idUser, idUserFollow } = req.body;
   try {
-    const user = await User.findById(id); // phamminhthai
-    if (!user.followers.includes(req.userId)) {
+    const user = await User.findById(idUserFollow);
+    if (!user.followers.includes(idUser)) {
       const newUser = await User.findByIdAndUpdate(
-        id,
+        idUserFollow,
         {
-          $push: { followers: req.userId },
-          // $push: { following: req.userId }
+          $push: { followers: idUser },
         },
 
         { new: true }
       );
-      res.status(200).json(newUser);
+      res.status(200).json({
+        status: true,
+        message: "Followed",
+        data: newUser,
+      });
     } else {
       const newUser = await User.findByIdAndUpdate(
-        id,
-        { $pull: { followers: req.userId } },
+        idUserFollow,
+        { $pull: { followers: idUser } },
         { new: true }
       );
-      res.status(200).json(newUser);
+      res.status(200).json({
+        status: true,
+        message: "Unfollowed",
+        data: newUser,
+      });
     }
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: false,
+      message: err.message,
+    });
   }
 };
-// };
+
+export const unFollow = async (req, res) => {
+  const { idUser, idUserFollow } = req.body;
+  try {
+    const userFollow = await User.findById(idUserFollow);
+    const userCurrent = await User.findById(idUser);
+
+    if (!userFollow.followers.includes(userCurrent._id)) {
+      return res.status(200).json({
+        status: true,
+        message: "User is not being followed",
+      });
+    } else {
+      userFollow.followers.pull(userCurrent._id);
+      userCurrent.following.pull(userFollow._id);
+      await userFollow.save();
+      await userCurrent.save();
+    }
+    res.status(200).json({
+      status: true,
+      message: "Unfollowed",
+      data: userFollow,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: false,
+      message: err.message,
+    });
+  }
+};
 
 export const getAllUser = async (req, res) => {
   const { id } = req.params;
@@ -107,8 +151,14 @@ export const getAllUser = async (req, res) => {
     const users = await User.find({ _id: { $ne: id } })
       .select("-password")
       .limit(5);
-    res.status(200).json(users);
+    res.status(200).json({
+      status: true,
+      data: users,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: false,
+      message: err.message,
+    });
   }
 };

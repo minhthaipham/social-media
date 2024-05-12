@@ -161,11 +161,6 @@ const NavBar = () => {
               />
             </IconButton>
           </Tooltip>
-          {/* <Typography variant="h6">
-            {user?.fullName.length > 10
-              ? user?.fullName.slice(0, 10)
-              : user?.fullName}
-          </Typography> */}
         </UserBox>
       </ThemeToolBar>
       <div>

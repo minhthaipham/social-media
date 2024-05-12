@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-
-const userSchema = mongoose.Schema(
+// const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
@@ -20,7 +20,6 @@ const userSchema = mongoose.Schema(
       default:
         "https://static2.yan.vn/YanNews/2167221/202102/facebook-cap-nhat-avatar-doi-voi-tai-khoan-khong-su-dung-anh-dai-dien-e4abd14d.jpg",
     },
-    role: { type: String, default: "user" },
     gender: { type: String, default: "male" },
     mobile: { type: String, default: "" },
     address: { type: String, default: "" },
